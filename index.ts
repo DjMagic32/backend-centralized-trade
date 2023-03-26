@@ -1,7 +1,7 @@
-import express from 'express';
-import mongoose from 'mongoose';
+const express = require('express');
+const mongoose = require('mongoose');
 // import cors from 'cors';
-import clienteRoutes from './src/routes/client';
+const clienteRoutes = require('./src/routes/client');
 require('dotenv').config();
 const app = express();
 
@@ -30,6 +30,6 @@ mongoose
       console.log(`Servidor corriendo en el puerto ${PORT}`);
     });
   })
-  .catch((error) => {
+  .catch((error: any) => {
     console.error(error);
   });

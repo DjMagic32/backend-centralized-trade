@@ -1,53 +1,81 @@
-import { RequestHandler } from 'express';
-import Cliente, { ICliente } from '../models/cliente';
+const Client = require ('../models/client.ts');
+import  { IClient }  from '../models/client';
 
-export const obtenerClientes: RequestHandler = async (req, res) => {
+
+// Controlador para crear un nuevo cliente
+export const createClient = async (req: any, res: any) => {
   try {
-    const clientes = await Cliente.find();
-    res.json(clientes);
+    const { name, lastName, email, phone, location, password } = req.body;
+    const client: IClient = new Client({ name, lastName, email, phone, location, password});
+    const savedClient: IClient = await client.save();
+    res.json(savedClient);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-export const obtenerCliente: RequestHandler = async (req, res) => {
+// Controlador para obtener todos los clientes
+export const getClients = async (req: any, res: any) => {
   try {
-    const cliente = await Cliente.findById(req.params.id);
-    if (!cliente) throw new Error('Cliente no encontrado');
-    res.json(cliente);
+    const clients: IClient[] = await Client.find();
+    res.json(clients);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-export const crearCliente: RequestHandler = async (req, res) => {
+// Controlador para obtener un cliente por su ID
+export const getClientById = async (req: any, res: any) => {
   try {
-    const cliente: ICliente = new Cliente(req.body);
-    await cliente.save();
-    res.json(cliente);
+    const { id } = req.params;
+    const client: IClient | null = await Client.findById(id);
+    if (client) {
+      res.json(client);
+    } else {
+      res.status(404).json({ message: 'Client not found' });
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-export const actualizarCliente: RequestHandler = async (req, res) => {
+// Controlador para actualizar un cliente por su ID
+export const updateClientById = async (req: any, res: any) => {
   try {
-    const cliente = await Cliente.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    if (!cliente) throw new Error('Cliente no encontrado');
-    res.json(cliente);
+    const { id } = req.params;
+    const { name, lastName, email, phone, location } = req.body;
+    const updatedClient: IClient | null = await Client.findByIdAndUpdate(
+      id,
+      { name, lastName, email, phone, location },
+      { new: true }
+    );
+    if (updatedClient) {
+      res.json(updatedClient);
+    } else {
+      res.status(404).json({ message: 'Client not found' });
+    }
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-export const eliminarCliente: RequestHandler = async (req, res) => {
+// Controlador para eliminar un cliente por su ID
+export const deleteClientById = async (req: any, res: any) => {
   try {
-    const cliente = await Cliente.findByIdAndDelete(req.params.id);
-    if (!cliente) throw new Error('Cliente no encontrado');
-    res.json({ message: 'Cliente eliminado' });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+    const { id } = req.params;
+    const deletedClient: IClient | null = await Client.findByIdAndDelete(id);
+    if (deletedClient) {
+      res.json(deletedClient);
+    } else {
+      res.status(404).json({ message: 'Client not found'})
+    }
   }
-};
+  catch (error:any){
+    console.log(error.message);
+    res.status(400).send(error.message);
+  }
+}
