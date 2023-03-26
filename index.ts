@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 // import cors from 'cors';
 import clienteRoutes from './src/routes/client';
-
+require('dotenv').config();
 const app = express();
 
 const PORT = process.env.PORT || 3001;
