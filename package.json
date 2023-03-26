@@ -4,9 +4,15 @@
   "main": "index.js",
   "author": "DjMagic32 <Garciawork3232@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2"
   }
 }
