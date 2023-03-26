@@ -1,22 +1,26 @@
-const { Router } = require('express');
-const {
+import { 
+  verifyEmail,
   getClients,
   getClientById,
   createClient,
   updateClientById,
-  deleteClientById,
-} = require('../controllers/clienteController');
+  deleteClientById } from "../controllers/clienteController";
 
-const router = Router();
+import { Router }  from 'express';
 
-router.get('/', getClients);
 
-router.get('/:id', getClientById);
+export const clienteRoutes = Router();
 
-router.post('/', createClient);
+clienteRoutes.get('/', getClients);
 
-router.put('/:id', updateClientById);
+clienteRoutes.get('/:id', getClientById);
 
-router.delete('/:id', deleteClientById);
+clienteRoutes.get('/verify/:token', verifyEmail)
 
-module.exports = router;
+clienteRoutes.post('/', createClient);
+
+clienteRoutes.put('/:id', updateClientById);
+
+clienteRoutes.delete('/:id', deleteClientById);
+
+
