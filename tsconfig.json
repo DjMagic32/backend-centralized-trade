@@ -1,10 +1,23 @@
 {
     "compilerOptions": {
+      "skipLibCheck": true,
+      "types": [
+        "@types/node",
+        "@types/mongoose",
+        "mongoose/types/"
+      ],
+      "typeRoots": [
+        "./node_modules/@types",
+        "./typings",
+        "./node_modules/mongoose/types"
+      ],
       "target": "es6",
       "module": "commonjs",
       "outDir": "dist",
       "rootDir": "./",
+      "baseUrl": "./",
       "esModuleInterop": true,
       "strict": true
-    }
+    },
+    "exclude": ["node_modules"]
   }

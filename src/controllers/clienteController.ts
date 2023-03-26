@@ -1,14 +1,16 @@
-const Client = require ('../models/client.ts');
-import  { IClient }  from '../models/client';
+import Client, { IClient }  from '../models/client';
+import jwt from "jsonwebtoken";
 
 
 // Controlador para crear un nuevo cliente
 export const createClient = async (req: any, res: any) => {
   try {
-    const { name, lastName, email, phone, location, password } = req.body;
-    const client: IClient = new Client({ name, lastName, email, phone, location, password});
-    const savedClient: IClient = await client.save();
-    res.json(savedClient);
+    const { name, lastName, email, phone, userLocation, password } = req.body;
+    const client: IClient = new Client({ name, lastName, email, phone, userLocation, password});
+    await client.save();
+    const token = jwt.sign({clientId: client._id}, "secretkey")
+
+    res.json({token});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
