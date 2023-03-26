@@ -1,7 +1,7 @@
-import express from 'express';
-import mongoose from 'mongoose';
+const express = require('express');
+const mongoose = require('mongoose');
 // import cors from 'cors';
-import clienteRoutes from './src/routes/client';
+const {clienteRoutes} = require('./src/routes/client');
 require('dotenv').config();
 const app = express();
 
@@ -10,13 +10,13 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/tienda';
 
 // Middleware
 app.use(express.json());
-// app.use(cors());s
+// app.use(cors());
 
 // Rutas
 app.use('/clientes', clienteRoutes);
 
 // Conexión a la base de datos
-mongoose
+mongoose      
   .connect(MONGO_URI
   //   ,{
   //   useNewUrlParser: true,
@@ -30,6 +30,6 @@ mongoose
       console.log(`Servidor corriendo en el puerto ${PORT}`);
     });
   })
-  .catch((error) => {
+  .catch((error: any) => {
     console.error(error);
   });
